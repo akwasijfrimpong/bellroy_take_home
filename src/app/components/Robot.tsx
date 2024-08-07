@@ -13,7 +13,7 @@ export default function Robot() {
       : direction === 180
       ? "rotate-180"
       : "-rotate-90";
-
+  //use effect used to hand key strokes
   useEffect(() => {
     const handleKeyUp = (event: { key: any }) => {
       console.log(`Key pressed: ${event.key}`);
@@ -27,17 +27,12 @@ export default function Robot() {
 
     window.addEventListener("keyup", handleKeyUp);
 
-    // Cleanup function to remove the event listener when the component unmounts
     return () => {
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [direction, positionCol, positionRow]); // Add direction and positionCol to the dependency array
+  }, [direction, positionCol, positionRow]);
 
-  useEffect(() => {
-    console.log(
-      `Position col: col-start-${positionCol} Position row: row-start-${positionRow}`
-    );
-  }, [positionCol, positionRow, direction]);
+  //updates position
 
   const handleWalk = () => {
     if (direction == 270) {
