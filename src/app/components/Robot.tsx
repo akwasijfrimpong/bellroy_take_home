@@ -5,55 +5,23 @@ export default function Robot() {
   const [positionCol, setPositionCol] = useState(1);
   const [positionRow, setPositionRow] = useState(1);
   const [direction, setDirection] = useState(270);
+  const rotationClass =
+    direction === 0
+      ? "rotate-0"
+      : direction === 90
+      ? "rotate-90"
+      : direction === 180
+      ? "rotate-180"
+      : "-rotate-90";
 
   useEffect(() => {
     const handleKeyUp = (event: { key: any }) => {
       console.log(`Key pressed: ${event.key}`);
       if (event.key === "ArrowUp") {
-        if (direction == 270) {
-          const newPosition = (positionCol + 1) % 6;
-          if (newPosition > 5) {
-            setPositionCol(1);
-          } else {
-            setPositionCol(newPosition);
-          }
-        } else if (direction == 90) {
-          if (positionCol > 0) {
-            let newPosition = (positionCol - 1) % 6;
-            if (newPosition > 0) {
-              setPositionCol(newPosition);
-              console.log("going here");
-            } else {
-              setPositionCol(5);
-            }
-          }
-          if (positionCol <= 0) {
-            setPositionCol(5);
-          }
-        }
-        //upDown movement below
-        else if (direction == 180) {
-          if (positionRow > 0) {
-            const newPos = (positionRow - 1) % 6;
-            if (newPos === 0) {
-              setPositionRow(5);
-            } else {
-              setPositionRow(newPos);
-            }
-          }
-        } else if (direction == 0) {
-          if (positionRow > 0) {
-            const newPos = positionRow + 1;
-            if (newPos === 6) {
-              setPositionRow(1);
-            } else {
-              setPositionRow(newPos);
-            }
-          }
-        }
+        handleWalk();
       } // Deal with rotating direction
       if (event.key == "R" || event.key == "r") {
-        setDirection((direction + 90) % 360);
+        handleRotate();
       }
     };
 
@@ -71,10 +39,72 @@ export default function Robot() {
     );
   }, [positionCol, positionRow, direction]);
 
+  const handleWalk = () => {
+    if (direction == 270) {
+      const newPosition = positionCol + 1;
+      if (newPosition > 5) {
+        setPositionCol(1);
+      } else {
+        setPositionCol(newPosition);
+      }
+    } else if (direction == 90) {
+      if (positionCol > 0) {
+        let newPosition = positionCol - 1;
+        if (newPosition > 0) {
+          setPositionCol(newPosition);
+          console.log("going here");
+        } else {
+          setPositionCol(5);
+        }
+      }
+      if (positionCol <= 0) {
+        setPositionCol(5);
+      }
+    }
+    if (direction == 180) {
+      if (positionRow > 0) {
+        const newPos = positionRow - 1;
+        if (newPos === 0) {
+          setPositionRow(5);
+        } else {
+          setPositionRow(newPos);
+        }
+      }
+    }
+    if (direction == 0) {
+      if (positionRow > 0) {
+        const newPos = positionRow + 1;
+        if (newPos === 6) {
+          setPositionRow(1);
+        } else {
+          setPositionRow(newPos);
+        }
+      }
+    }
+  };
+
+  const handleRotate = () => {
+    setDirection((direction + 90) % 360);
+  };
+
   return (
-    <div className={`col-start-${positionCol} row-start-${positionRow}`}>
-      <div className={direction == 270 ? "-rotate-90" : `rotate-${direction}`}>
-        <Image src="/robotOrange.jpeg" width={100} height={100} alt="robot" />
+    <div style={{ gridColumnStart: positionCol, gridRowStart: positionRow }}>
+      <div className={rotationClass}>
+        <Image src="/robotOrange.jpeg" width={120} height={120} alt="robot" />
+      </div>
+      <div>
+        <button
+          className="bg-orange-500 p-3 w-[80px] text-white rounded-lg font-bold absolute top-[175px] left-[610px]"
+          onClick={handleWalk}
+        >
+          Walk
+        </button>
+        <button
+          className="bg-orange-500 p-3 w-[80px] text-white rounded-lg font-bold absolute top-[176px] left-[700px]"
+          onClick={handleRotate}
+        >
+          Rotate
+        </button>
       </div>
     </div>
   );

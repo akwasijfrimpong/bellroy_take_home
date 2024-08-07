@@ -7,10 +7,9 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center">
       <Nav />
+      <section className="flex gap-5 pt-10 relative">
+        <RobotGrid />
 
-      <RobotGrid />
-
-      <section>
         <Controls />
       </section>
     </main>

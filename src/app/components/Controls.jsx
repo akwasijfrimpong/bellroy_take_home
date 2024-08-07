@@ -11,6 +11,12 @@ export default function Controls() {
         Use the <span className="font-bold">&apos;R&apos;</span> key to rotate
         the direction the robot is facing
       </p>
+      <p className="text-black pt-2">
+        {" "}
+        Alternatively Use the{" "}
+        <span className="font-bold">&apos;Buttons&apos;</span> below to control
+        the robot.
+      </p>
     </div>
   );
 }
